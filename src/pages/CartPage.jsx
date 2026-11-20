@@ -3,10 +3,11 @@ import { Link } from 'react-router'
 import { useCart } from '../cart/useCart.js'
 import { useCartLineActions } from '../cart/useCartLineActions.js'
 import CartLineItem from '../components/CartLineItem.jsx'
+import CheckoutButton from '../components/CheckoutButton.jsx'
 import { formatMoney } from '../lib/formatMoney.js'
 
 export default function CartPage() {
-  const { cart, loading, loadError, busy, retry } = useCart()
+  const { cart, loading, loadError, busy, checkingOut, retry } = useCart()
   const { feedback, changeQuantity, removeLine } = useCartLineActions()
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function CartPage() {
           </button>
         </div>
       )}
-      {busy && <p className="mt-5 text-sm text-muted" role="status">Updating your cart…</p>}
+      {busy && !checkingOut && <p className="mt-5 text-sm text-muted" role="status">Updating your cart…</p>}
       {feedback?.error && <p className="mt-5 text-sm text-red-800" role="alert">{feedback.error}</p>}
       {feedback && !feedback.error && (
         <p className="mt-5 text-sm text-muted" role="status">{feedback.warning || feedback.success}</p>
@@ -55,6 +56,9 @@ export default function CartPage() {
                   <dd>{formatMoney(cart.subtotal.amount, cart.subtotal.currencyCode)}</dd>
                 </div>
               </dl>
+              <div className="mt-5">
+                <CheckoutButton />
+              </div>
             </aside>
           </div>
         ) : (

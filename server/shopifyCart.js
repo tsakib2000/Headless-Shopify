@@ -41,6 +41,14 @@ const mutationFields = `
 `
 
 export const cartQueries = {
+  checkout: `
+    query CartCheckout($cartId: ID!) {
+      cart(id: $cartId) {
+        totalQuantity
+        checkoutUrl
+      }
+    }
+  `,
   read: `
     query ReadCart($cartId: ID!, $after: String) {
       cart(id: $cartId) {
@@ -90,6 +98,11 @@ export function createShopifyCartClient(config) {
     return cart
   }
 
+  async function readCheckout(cartId) {
+    const { cart } = await request('checkout', { cartId })
+    return cart
+  }
+
   async function toPublicCart(snapshot) {
     const lines = [...snapshot.lines.nodes]
     let pageInfo = snapshot.lines.pageInfo
@@ -132,5 +145,5 @@ export function createShopifyCartClient(config) {
     return cartLinesRemove
   }
 
-  return { readPage, toPublicCart, add, update, remove }
+  return { readPage, readCheckout, toPublicCart, add, update, remove }
 }

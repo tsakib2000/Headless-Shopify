@@ -13,7 +13,7 @@ export default function CartProvider({ children }) {
   const [cart, setCart] = useState(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
-  const [busy, setBusy] = useState(false)
+  const [activeAction, setActiveAction] = useState('')
   const [attempt, setAttempt] = useState(0)
   const [drawerNotice, setDrawerNotice] = useState(null)
   const pending = useRef(false)
@@ -57,10 +57,10 @@ export default function CartProvider({ children }) {
     }
   }
 
-  async function mutate(action) {
+  async function runCartAction(action) {
     if (loading || pending.current) return null
     pending.current = true
-    setBusy(true)
+    setActiveAction(action.action)
 
     try {
       const result = await requestCart({
@@ -73,13 +73,15 @@ export default function CartProvider({ children }) {
         setLoadError('')
       }
       if (result.status >= 500) await refreshAfterFailure()
-      return result.ok ? { warning: result.warning } : { error: result.error || networkError }
+      return result.ok
+        ? { warning: result.warning, checkoutUrl: result.checkoutUrl }
+        : { error: result.error || networkError }
     } catch {
       await refreshAfterFailure()
       return { error: networkError }
     } finally {
       pending.current = false
-      setBusy(false)
+      setActiveAction('')
     }
   }
 
@@ -88,14 +90,16 @@ export default function CartProvider({ children }) {
       cart,
       loading,
       loadError,
-      busy,
+      busy: Boolean(activeAction),
+      checkingOut: activeAction === 'checkout',
       retry,
       drawerNotice,
       openDrawer: (notice = '') => setDrawerNotice(notice),
       closeDrawer: () => setDrawerNotice(null),
-      addItem: (merchandiseId, quantity) => mutate({ action: 'add', merchandiseId, quantity }),
-      updateQuantity: (lineId, quantity) => mutate({ action: 'update', lineId, quantity }),
-      removeItem: (lineId) => mutate({ action: 'remove', lineId }),
+      addItem: (merchandiseId, quantity) => runCartAction({ action: 'add', merchandiseId, quantity }),
+      updateQuantity: (lineId, quantity) => runCartAction({ action: 'update', lineId, quantity }),
+      removeItem: (lineId) => runCartAction({ action: 'remove', lineId }),
+      startCheckout: () => runCartAction({ action: 'checkout' }),
     }}>
       {children}
     </CartContext.Provider>

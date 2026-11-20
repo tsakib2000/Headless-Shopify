@@ -4,13 +4,14 @@ import { useCart } from '../cart/useCart.js'
 import { useCartLineActions } from '../cart/useCartLineActions.js'
 import { formatMoney } from '../lib/formatMoney.js'
 import CartLineItem from './CartLineItem.jsx'
+import CheckoutButton from './CheckoutButton.jsx'
 
 function CartDrawerContents() {
-  const { cart, loading, loadError, busy, retry, drawerNotice, closeDrawer } = useCart()
+  const { cart, loading, loadError, busy, checkingOut, retry, drawerNotice, closeDrawer } = useCart()
   const { feedback, changeQuantity, removeLine } = useCartLineActions()
   const hasItems = Boolean(cart?.lines.length)
   const ready = !loading && !loadError
-  const notice = busy ? 'Updating your cart…' : feedback?.warning || feedback?.success || drawerNotice
+  const notice = busy && !checkingOut ? 'Updating your cart…' : feedback?.warning || feedback?.success || drawerNotice
 
   return (
     <>
@@ -51,13 +52,18 @@ function CartDrawerContents() {
       {ready && (
         <footer className="border-t border-line bg-surface px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
           {hasItems && (
-            <dl className="mb-4 flex items-baseline justify-between gap-4">
-              <dt className="text-sm font-medium">Subtotal</dt>
-              <dd className="text-lg font-semibold">{formatMoney(cart.subtotal.amount, cart.subtotal.currencyCode)}</dd>
-            </dl>
+            <>
+              <dl className="mb-4 flex items-baseline justify-between gap-4">
+                <dt className="text-sm font-medium">Subtotal</dt>
+                <dd className="text-lg font-semibold">{formatMoney(cart.subtotal.amount, cart.subtotal.currencyCode)}</dd>
+              </dl>
+              <CheckoutButton />
+            </>
           )}
           <Link
-            className="shop-action w-full"
+            className={hasItems
+              ? 'mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-lg text-sm font-semibold text-brand hover:bg-subtle'
+              : 'shop-action w-full'}
             to={hasItems ? '/cart' : '/shop'}
             onClick={closeDrawer}
           >

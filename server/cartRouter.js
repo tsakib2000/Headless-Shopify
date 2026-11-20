@@ -40,9 +40,24 @@ export function createCartRouter(config, { secure = false } = {}) {
 
   router.post('/', async (request, response) => {
     const { action, merchandiseId, lineId, quantity } = request.body ?? {}
+    const cartId = readCartCookie(request.headers.cookie, cookieName)
+
+    if (action === 'checkout') {
+      const cart = cartId ? await shopify.readCheckout(cartId) : null
+      if (cartId && !cart) response.clearCookie(cookieName, cookieOptions)
+      if (!cart?.totalQuantity) {
+        return response.status(409).json({ cart: null, error: 'Add an item before checking out.' })
+      }
+
+      const url = URL.canParse(cart.checkoutUrl) ? new URL(cart.checkoutUrl) : null
+      if (url?.protocol !== 'https:' || url.username || url.password) {
+        return response.status(502).json({ error: 'Shopify could not open checkout. Please try again.' })
+      }
+      return response.json({ checkoutUrl: cart.checkoutUrl })
+    }
+
     const validQuantity = Number.isInteger(quantity) && quantity >= 1 && quantity <= 2147483647
     const validLine = typeof lineId === 'string' && lineId.length > 0 && lineId.length <= 2048
-    const cartId = readCartCookie(request.headers.cookie, cookieName)
     let payload
 
     switch (action) {

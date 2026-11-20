@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f8f5ec;
+  --color-forest: #192d23;
+  --color-moss: #4b5a4d;
+  --color-oat: #dce3d4;
+  --color-gold: #f4cc75;
+  --color-line: #ddd9ca;
+  --font-display: Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  body {
+    @apply bg-paper text-forest antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  .cart-drawer {
+    position: fixed;
+    inset: 0 0 0 auto;
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .cart-drawer[open] {
+      animation: cart-drawer-from-right 240ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+    }
+
+    @keyframes cart-drawer-from-right {
+      from { translate: 100% 0; }
+      to { translate: 0 0; }
+    }
+  }
+}
+
+@utility page-width {
+  width: min(100% - clamp(2rem, 8vw, 8rem), 86rem);
+  margin-inline: auto;
+}
+
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-[0.16em] uppercase;
+}
+
+@utility page-heading {
+  @apply font-display text-[clamp(2.8rem,6vw,5.5rem)] leading-none tracking-[-0.055em];
+}

@@ -25,6 +25,7 @@ export default function ShopPage() {
     (!category || productType.trim().toLowerCase() === category) &&
     `${title} ${productType}`.toLowerCase().includes(searchTerm),
   )
+  const catalogTitle = categories.get(category) ?? 'Shop all tech'
 
   useEffect(() => {
     const controller = new AbortController()
@@ -68,11 +69,11 @@ export default function ShopPage() {
   }
 
   return (
-    <section className="page-width py-10 sm:py-14" aria-labelledby="shop-title">
-      <h1 id="shop-title" className="page-heading">Shop all products</h1>
+    <section className="page-width py-8 sm:py-12" aria-labelledby="shop-title">
+      <h1 id="shop-title" className="page-heading">{catalogTitle}</h1>
 
       {error && (
-        <div className="mt-8 rounded-md border border-line p-5">
+        <div className="mt-7 rounded-xl border border-line bg-surface p-5">
           <p role="alert">{error}</p>
           <button className="mt-3 min-h-11 underline underline-offset-4" onClick={retry} type="button">
             Try again
@@ -83,20 +84,20 @@ export default function ShopPage() {
 
       {catalog && (
         <>
-          <div className="mt-8 rounded-md border border-line p-5">
-            <label className="block font-semibold" htmlFor="catalog-search">Search products</label>
+          <div className="mt-6 rounded-xl border border-line bg-surface p-4 sm:mt-8 sm:p-5">
+            <label className="sr-only" htmlFor="catalog-search">Search products</label>
             <input
-              className="mt-3 block min-h-12 w-full max-w-md rounded-sm border border-line bg-white px-3"
+              className="block min-h-12 w-full max-w-md rounded-lg border border-line bg-canvas px-4"
               ref={searchInput}
               id="catalog-search"
               type="search"
               value={query}
               onChange={updateSearch}
-              placeholder="Search by product name or type"
+              placeholder="Search products"
             />
             {(categories.size > 0 || category) && (
-              <nav className="mt-4 flex flex-wrap gap-2 text-sm [&_a]:rounded-sm [&_a]:border [&_a]:border-line [&_a]:px-3 [&_a]:py-2 [&_a:hover]:bg-oat [&_a[aria-current=true]]:border-forest [&_a[aria-current=true]]:bg-forest [&_a[aria-current=true]]:text-paper" aria-label="Filter by product type">
-                <Link to={categoryLink()} aria-current={category ? undefined : 'true'}>All</Link>
+              <nav className="mt-4 flex flex-wrap gap-2 text-sm font-medium [&_a]:rounded-full [&_a]:border [&_a]:border-line [&_a]:px-3.5 [&_a]:py-2 [&_a:hover]:bg-subtle [&_a[aria-current=true]]:border-brand [&_a[aria-current=true]]:bg-brand [&_a[aria-current=true]]:text-white" aria-label="Filter by product type">
+                <Link to={categoryLink()} aria-current={category ? undefined : 'true'}>All products</Link>
                 {[...categories].map(([id, label]) => (
                   <Link key={id} to={categoryLink(id)} aria-current={category === id ? 'true' : undefined}>
                     {label}
@@ -105,22 +106,23 @@ export default function ShopPage() {
               </nav>
             )}
           </div>
-          <p className="mt-6 text-sm text-moss" role="status">
+          <p className="mt-6 text-sm text-muted" role="status">
             {products.length === 0
               ? 'No products are published to this storefront yet.'
               : `${results.length} ${results.length === 1 ? 'product' : 'products'}${results.length === 0 ? ' match your filters' : ''}`}
           </p>
-          <ul className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {results.map(({ id, handle, title, featuredImage, priceRange, availableForSale }) => (
+          <ul className="mt-4 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+            {results.map(({ id, handle, title, productType, featuredImage, priceRange, availableForSale }) => (
               <li key={id}>
                 <Link
                   aria-label={title}
-                  className="block h-full rounded-md hover:bg-oat/30 hover:[&_h2]:underline"
+                  className="group block h-full rounded-xl"
                   state={{ shopSearch: search }}
                   to={`/products/${encodeURIComponent(handle)}`}
                 >
                   <ProductCard
                     title={title}
+                    category={productType}
                     imageUrl={featuredImage?.url}
                     imageAlt={featuredImage?.altText}
                     price={priceRange.minVariantPrice.amount}
@@ -132,6 +134,12 @@ export default function ShopPage() {
               </li>
             ))}
           </ul>
+          {products.length > 0 && results.length === 0 && (
+            <div className="mt-4 rounded-xl border border-line bg-surface p-6 sm:p-8">
+              <p className="text-muted">Try a different search or browse the full catalog.</p>
+              <Link to="/shop" className="mt-4 inline-block text-sm font-semibold text-brand underline underline-offset-4">Clear filters</Link>
+            </div>
+          )}
         </>
       )}
     </section>

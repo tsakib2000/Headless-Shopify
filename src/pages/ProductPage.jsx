@@ -37,7 +37,7 @@ function ProductPageContent({ handle }) {
 
   return (
     <div className="page-width py-8 sm:py-12">
-      <Link className="mb-7 inline-block underline underline-offset-4" to={{ pathname: '/shop', search: state?.shopSearch }}>
+      <Link className="mb-6 inline-block text-sm font-semibold text-brand underline-offset-4 hover:underline" to={{ pathname: '/shop', search: state?.shopSearch }}>
         Back to shop
       </Link>
       {result.status === 'loading' && <p role="status">Loading product…</p>}

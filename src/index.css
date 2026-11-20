@@ -1,22 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f8f5ec;
-  --color-forest: #192d23;
-  --color-moss: #4b5a4d;
-  --color-oat: #dce3d4;
-  --color-gold: #f4cc75;
-  --color-line: #ddd9ca;
-  --font-display: Georgia, "Times New Roman", serif;
+  --color-canvas: #f6f7fb;
+  --color-surface: #ffffff;
+  --color-ink: #11182d;
+  --color-muted: #526078;
+  --color-subtle: #edf0f7;
+  --color-line: #dce2ee;
+  --color-brand: #2345e1;
+  --color-brand-hover: #1833b6;
+  --color-volt: #dafa58;
+  --color-night: #050e21;
+  --font-display: "Space Grotesk Variable", system-ui, sans-serif;
 }
 
 @layer base {
   body {
-    @apply bg-paper text-forest antialiased;
+    @apply bg-canvas text-ink antialiased;
   }
 
   :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--color-brand);
     outline-offset: 4px;
   }
 }
@@ -45,10 +49,10 @@
   margin-inline: auto;
 }
 
-@utility eyebrow {
-  @apply text-xs font-semibold tracking-[0.16em] uppercase;
+@utility page-heading {
+  @apply font-display text-[clamp(2.5rem,5vw,4.75rem)] leading-[0.98] font-bold tracking-[-0.065em];
 }
 
-@utility page-heading {
-  @apply font-display text-[clamp(2.8rem,6vw,5.5rem)] leading-none tracking-[-0.055em];
+@utility shop-action {
+  @apply inline-flex min-h-12 items-center justify-center rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-hover;
 }

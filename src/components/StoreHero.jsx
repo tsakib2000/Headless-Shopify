@@ -1,58 +1,71 @@
 import { Link } from 'react-router'
-import everydayCarry from '../assets/everyday-carry.jpg'
+import audioImage from '../assets/category-audio.jpg'
+import deskImage from '../assets/category-desk-tech.jpg'
+import dronesImage from '../assets/category-drones.jpg'
+import phonesImage from '../assets/category-phones.jpg'
+import heroImage from '../assets/technology-hero.jpg'
 
-const featuredCategories = [
-  { id: 'bags', label: 'Bags' },
-  { id: 'headwear', label: 'Headwear' },
-  { id: 'drinkware', label: 'Drinkware' },
+const categories = [
+  { label: 'Phones', type: 'phones', image: phonesImage, description: 'Smartphones & foldables' },
+  { label: 'Drones', type: 'drones', image: dronesImage, description: 'Camera drones & beginner kits' },
+  { label: 'Audio', type: 'audio', image: audioImage, description: 'Headphones, earbuds & more' },
+  { label: 'Desk tech', type: 'desk tech', image: deskImage, description: 'Keyboards, displays & hubs' },
 ]
 
 export default function StoreHero() {
   return (
-    <section className="page-width pt-5 pb-10 sm:pt-8 lg:pt-10" aria-labelledby="hero-title">
-      <div className="grid overflow-hidden rounded-lg bg-forest text-paper md:grid-cols-[0.91fr_1.09fr]">
-        <div className="flex min-h-[24rem] flex-col items-start justify-center px-[clamp(1.4rem,4.2vw,4.5rem)] py-10 md:min-h-[34rem] lg:min-h-[37rem]">
-          <p className="eyebrow mb-5 flex items-center gap-3 text-gold sm:mb-7">
-            <span className="h-px w-6 shrink-0 bg-current" aria-hidden="true" />
-            The Everyday Carry Collection
-          </p>
-          <h1 id="hero-title" className="font-display text-[clamp(2.8rem,8.7vw,5.6rem)] leading-[0.98] tracking-[-0.065em] md:text-[clamp(3.1rem,6vw,6rem)]">
-            Good gear.<br /><em className="text-gold">Better days.</em>
+    <div className="page-width pt-4 pb-12 sm:pt-7 lg:pb-18">
+      <section className="relative isolate grid overflow-hidden rounded-2xl bg-night text-white md:min-h-[clamp(25rem,36vw,34rem)]" aria-labelledby="hero-title">
+        <div className="relative z-10 flex flex-col items-start justify-center px-5 pt-8 pb-4 sm:px-9 sm:pt-10 md:max-w-[57%] md:px-[clamp(2rem,4.3vw,4.5rem)] md:py-12">
+          <h1 id="hero-title" className="font-display text-[clamp(2.8rem,10vw,5.25rem)] leading-[0.89] font-bold tracking-[-0.075em] md:text-[clamp(3.5rem,6.6vw,6.5rem)]">
+            Tech for<br />
+            <span className="text-volt">what’s next.</span>
           </h1>
-          <p className="mt-6 max-w-[31ch] text-base leading-[1.65] text-oat sm:text-lg">
-            Canvas bags, easy-wearing caps, and drinkware for the morning commute and the long way home.
+          <p className="mt-5 max-w-[34ch] text-base leading-relaxed text-[#d7e2f8] sm:text-lg">
+            Find your next phone, take to the skies, or upgrade your everyday setup.
           </p>
-          <Link
-            className="mt-7 inline-flex min-h-12 items-center rounded-sm bg-gold px-5 text-sm font-semibold text-forest transition-colors hover:bg-paper focus-visible:outline-gold motion-reduce:transition-none sm:mt-9 sm:px-6"
-            to="/shop"
-          >
-            Shop all products
-          </Link>
+          <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
+            <Link className="inline-flex min-h-12 items-center rounded-lg bg-volt px-4 text-sm font-bold text-night hover:bg-white focus-visible:outline-volt sm:px-5" to="/shop">
+              Shop all tech
+            </Link>
+            <Link className="inline-flex min-h-12 items-center rounded-lg border border-white/40 px-4 text-sm font-semibold text-white hover:border-white hover:bg-white/10 focus-visible:outline-volt sm:px-5" to="/shop?category=drones">
+              Browse drones
+            </Link>
+          </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden bg-[#a26522] sm:aspect-[3/2] md:aspect-auto">
+        <div className="relative aspect-[1.6] sm:aspect-[1.85] md:absolute md:inset-y-0 md:right-0 md:w-[72%] md:aspect-auto">
           <img
-            className="absolute inset-0 size-full object-cover object-[54%_center]"
-            src={everydayCarry}
-            alt="Canvas utility tote, olive cap, and stainless steel tumbler in warm sunlight"
+            className="size-full object-cover object-[58%_center]"
+            src={heroImage}
+            alt="A blue smartphone, a silver camera drone, and wireless earbuds"
             width={1536}
             height={1024}
             fetchPriority="high"
           />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-linear-to-b from-night to-transparent to-38% md:bg-linear-to-r md:to-52%" />
         </div>
-      </div>
+      </section>
 
-      <nav className="mt-5 grid grid-cols-3 items-center rounded-md border border-line sm:grid-cols-[1.15fr_repeat(3,1fr)]" aria-label="Shop by category">
-        <span className="eyebrow col-span-3 border-b border-line px-4 py-3.5 text-moss sm:col-span-1 sm:border-0 sm:px-5">Shop by category</span>
-        {featuredCategories.map(({ id, label }, index) => (
-          <Link
-            key={id}
-            to={`/shop?category=${id}`}
-            className={`flex min-h-14 items-center justify-center px-2 font-display text-[clamp(1rem,2.1vw,1.5rem)] transition-colors hover:bg-oat focus-visible:-outline-offset-4 motion-reduce:transition-none sm:min-h-[4.5rem] ${index === 0 ? 'sm:border-l sm:border-line' : 'border-l border-line'}`}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
-    </section>
+      <section className="mt-9 sm:mt-11" aria-labelledby="category-title">
+        <h2 id="category-title" className="font-display text-3xl font-bold tracking-[-0.06em] sm:text-[2.55rem]">Shop by category</h2>
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 lg:grid-cols-4 lg:gap-5">
+          {categories.map(({ label, type, image, description }) => (
+            <Link
+              key={type}
+              to={`/shop?${new URLSearchParams({ category: type })}`}
+              className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface hover:border-brand"
+            >
+              <div className="aspect-[1.4] overflow-hidden bg-subtle sm:aspect-[1.65]">
+                <img className="size-full object-cover motion-safe:transition-transform motion-safe:group-hover:scale-[1.04]" src={image} alt="" width={724} height={543} loading="lazy" />
+              </div>
+              <div className="p-3 sm:p-4">
+                <h3 className="font-display text-lg leading-tight font-bold tracking-[-0.045em] group-hover:text-brand sm:text-xl">{label}</h3>
+                <p className="mt-1 text-xs leading-snug text-muted sm:text-sm">{description}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }

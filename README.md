@@ -17,6 +17,6 @@ npm install
 npm run dev
 ```
 
-Restart Vite after editing `.env.local`, then open `/shop`. The catalog shows product images, prices, and availability. Search and filters apply to the full catalog. The homepage shortcuts match the Shopify **Product type** values `Bags`, `Headwear`, and `Drinkware`, ignoring case.
+Restart Vite after editing `.env.local`, then open `/shop`. The catalog shows product images, prices, and availability. Search and filters apply to the full catalog. The Circuit Harbor homepage shortcuts match the Shopify **Product type** values `Phones`, `Drones`, `Audio`, and `Desk Tech` from `technology-products.csv`, ignoring case.
 
 Run `npm run lint` to check the code. For production, run `npm run build` and serve the app with `npm start` on a Node.js host behind HTTPS. The server serves the built frontend, routes direct links to React, and handles the same-origin `/api/cart` endpoint. It keeps the full Shopify cart ID in an HttpOnly cookie. Set the same Shopify environment variables at build time and on the running server.

@@ -1,7 +1,7 @@
 import { Link } from 'react-router'
 import { formatMoney } from '../lib/formatMoney.js'
 
-const stepperClass = 'grid size-10 cursor-pointer place-items-center text-lg hover:bg-oat disabled:cursor-not-allowed disabled:opacity-40'
+const stepperClass = 'grid size-10 cursor-pointer place-items-center text-lg hover:bg-subtle disabled:cursor-not-allowed disabled:opacity-40'
 
 export default function CartLineItem({ line, disabled, onUpdate, onRemove, onProductClick }) {
   const { id, quantity, merchandise, cost } = line
@@ -16,20 +16,20 @@ export default function CartLineItem({ line, disabled, onUpdate, onRemove, onPro
     <li className="grid grid-cols-[4rem_1fr] gap-x-4 gap-y-3 py-5 sm:grid-cols-[5rem_1fr_auto] sm:gap-x-5">
       {image ? (
         <img
-          className="aspect-square w-full rounded-md bg-oat object-cover"
+          className="aspect-square w-full rounded-md bg-subtle object-cover"
           src={image.url}
           alt={image.altText || product.title}
           loading="lazy"
         />
-      ) : <div className="aspect-square rounded-md bg-oat" aria-hidden="true" />}
+      ) : <div className="aspect-square rounded-md bg-subtle" aria-hidden="true" />}
 
       <div className="min-w-0">
-        <h2 className="font-display text-xl [overflow-wrap:anywhere]">
-          <Link className="underline-offset-4 hover:underline" to={`/products/${encodeURIComponent(product.handle)}`} onClick={onProductClick}>
+        <h2 className="font-display text-lg font-bold tracking-[-0.035em] [overflow-wrap:anywhere]">
+          <Link className="underline-offset-4 hover:text-brand hover:underline" to={`/products/${encodeURIComponent(product.handle)}`} onClick={onProductClick}>
             {product.title}
           </Link>
         </h2>
-        {showVariant && <p className="mt-1 text-sm text-moss">{variantTitle}</p>}
+        {showVariant && <p className="mt-1 text-sm text-muted">{variantTitle}</p>}
         <p className="mt-2 font-semibold sm:hidden">{formatMoney(lineTotal.amount, lineTotal.currencyCode)}</p>
       </div>
       <p className="hidden text-right font-semibold sm:block">{formatMoney(lineTotal.amount, lineTotal.currencyCode)}</p>
@@ -57,7 +57,7 @@ export default function CartLineItem({ line, disabled, onUpdate, onRemove, onPro
           </button>
         </div>
         <button
-          className="min-h-10 cursor-pointer text-sm text-moss underline underline-offset-4 hover:text-forest disabled:cursor-not-allowed disabled:opacity-50"
+          className="min-h-10 cursor-pointer text-sm text-muted underline underline-offset-4 hover:text-ink disabled:cursor-not-allowed disabled:opacity-50"
           type="button"
           disabled={disabled}
           aria-label={`Remove ${itemName}`}

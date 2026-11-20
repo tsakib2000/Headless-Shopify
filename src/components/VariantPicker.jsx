@@ -8,7 +8,7 @@ export default function VariantPicker({ options, variants, selectedVariant, onSe
   const id = useId()
 
   return (
-    <div className="mt-7 space-y-5 rounded-lg border border-line bg-white/55 p-4 sm:p-5">
+    <div className="mt-6 space-y-5 rounded-xl border border-line bg-canvas p-4">
       {options.map(({ name, optionValues }, index) => {
         const earlierOptions = options.slice(0, index)
         const laterOptions = options.slice(index + 1)
@@ -28,7 +28,7 @@ export default function VariantPicker({ options, variants, selectedVariant, onSe
         return (
           <fieldset key={name} disabled={disabled}>
             <legend className="mb-2.5 text-sm font-semibold">
-              {name} <span className="ml-1.5 font-normal text-moss">{currentValue}</span>
+              {name} <span className="ml-1.5 font-normal text-muted">{currentValue}</span>
             </legend>
             <div className="flex flex-wrap gap-2">
               {optionValues.map(({ name: value }) => {
@@ -50,7 +50,7 @@ export default function VariantPicker({ options, variants, selectedVariant, onSe
                       disabled={!nextVariant}
                       onChange={() => onSelect(nextVariant.id)}
                     />
-                    <span className={`flex min-h-11 cursor-pointer flex-wrap items-center gap-x-2 gap-y-0.5 rounded-md border border-line bg-white px-3 py-2 text-sm font-medium [overflow-wrap:anywhere] hover:border-forest peer-checked:border-forest peer-checked:bg-forest peer-checked:text-paper peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-forest peer-disabled:cursor-not-allowed peer-disabled:opacity-55 ${inStock ? '' : 'border-dashed'}`}>
+                    <span className={`flex min-h-11 cursor-pointer flex-wrap items-center gap-x-2 gap-y-0.5 rounded-lg border border-line bg-surface px-3 py-2 text-sm font-medium [overflow-wrap:anywhere] hover:border-brand peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand peer-disabled:cursor-not-allowed peer-disabled:opacity-55 ${inStock ? '' : 'border-dashed'}`}>
                       {value}
                       {!inStock && (
                         <span className="text-xs font-normal opacity-80">

@@ -29,16 +29,16 @@ export default function ProductDetails({ product }) {
   }
 
   return (
-    <article className={image ? 'grid items-start gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14' : undefined}>
+    <article className={image ? 'grid items-start gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:gap-8' : 'max-w-3xl'}>
       {image && (
         <img
-          className="aspect-square w-full rounded-md border border-line bg-oat object-contain"
+          className="aspect-square w-full rounded-2xl border border-line bg-surface object-contain p-4 sm:p-6"
           src={image.url}
           alt={image.altText || title}
         />
       )}
-      <div>
-        <h1 className="font-display text-[clamp(2.5rem,5vw,4.75rem)] leading-[0.98] tracking-[-0.05em]">{title}</h1>
+      <div className="rounded-2xl border border-line bg-surface p-5 sm:p-8">
+        <h1 className="font-display text-[clamp(2rem,4.8vw,4.25rem)] leading-[0.98] font-bold tracking-[-0.065em] [overflow-wrap:anywhere]">{title}</h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2" role="status">
           {selectedVariant && (
@@ -46,7 +46,7 @@ export default function ProductDetails({ product }) {
               {formatMoney(selectedVariant.price.amount, selectedVariant.price.currencyCode)}
             </p>
           )}
-          <p className={`rounded-full px-3 py-1 text-sm ${selectedVariant?.availableForSale ? 'bg-oat text-forest' : 'bg-line text-moss'}`}>
+          <p className={`rounded-full px-3 py-1 text-sm font-medium ${selectedVariant?.availableForSale ? 'bg-emerald-50 text-emerald-800' : 'bg-subtle text-muted'}`}>
             {selectedVariant
               ? (selectedVariant.availableForSale ? 'Available' : 'Sold out')
               : 'This variant is unavailable.'}
@@ -64,7 +64,7 @@ export default function ProductDetails({ product }) {
         )}
 
         <button
-          className="mt-6 min-h-13 w-full cursor-pointer rounded-md bg-forest px-5 py-3 font-semibold text-paper hover:bg-moss disabled:cursor-not-allowed disabled:bg-line disabled:text-moss aria-disabled:cursor-wait aria-disabled:bg-line aria-disabled:text-moss"
+          className="shop-action mt-6 min-h-13 w-full cursor-pointer disabled:cursor-not-allowed disabled:bg-line disabled:text-muted aria-disabled:cursor-wait aria-disabled:bg-line aria-disabled:text-muted"
           type="button"
           disabled={loading || !selectedVariant?.availableForSale}
           aria-disabled={busy || undefined}
@@ -73,7 +73,7 @@ export default function ProductDetails({ product }) {
           {busy ? 'Updating cart…' : quantity > 1 ? `Add ${quantity} to cart` : 'Add to cart'}
         </button>
         {error && <p className="mt-3 text-sm text-red-800" role="alert">{error}</p>}
-        {description && <p className="mt-7 max-w-[60ch] whitespace-pre-line border-t border-line pt-6 text-moss">{description}</p>}
+        {description && <p className="mt-7 max-w-[60ch] whitespace-pre-line border-t border-line pt-6 text-muted">{description}</p>}
       </div>
     </article>
   )
